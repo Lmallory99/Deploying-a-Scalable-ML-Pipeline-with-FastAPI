@@ -1,4 +1,6 @@
 import numpy as np
+import pytest
+
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
@@ -51,13 +53,14 @@ def test_inference_returns_array():
     assert len(preds) == len(y)
 
 
-def test_compute_model_metrics_returns_floats():
+def test_compute_model_metrics_values():
     """
-    Test that compute_model_metrics returns three float values.
+    Test that compute_model_metrics returns the correct precision, recall,
+    and F1 values for a known input.
     """
     y_true = np.array([0, 1, 1, 0, 1])
     y_pred = np.array([0, 1, 0, 0, 1])
     precision, recall, fbeta = compute_model_metrics(y_true, y_pred)
-    assert isinstance(precision, float)
-    assert isinstance(recall, float)
-    assert isinstance(fbeta, float)
+    assert precision == pytest.approx(1.0)
+    assert recall == pytest.approx(2 / 3)
+    assert fbeta == pytest.approx(0.8)
